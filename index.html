@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooking Game</title>
+<style>
+body { font-family: Arial; text-align: center; background: #fff8e1; }
+h2 { color: #d84315; }
+button { padding: 10px; margin: 5px; font-size: 16px; border-radius: 10px; border: none; background: #ffcc80; }
+button:hover { background: #ffb74d; }
+#gameBox { padding: 10px; }
+img { width: 80px; height: 80px; }
+</style>
+</head>
+<body>
+
+<h2>👧 Cooking Game Story</h2>
+<p id="story">Ek ladki apni mom ke sath cake lene gayi aur apna birthday celebrate kiya 🎉</p>
+
+<img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="girl">
+
+<h3 id="order"></h3>
+
+<div id="ingredients"></div>
+
+<h3 id="selected">Selected: </h3>
+<button onclick="serve()">🍽 Serve</button>
+
+<h3 id="score">Score: 0</h3>
+
+<script>
+const recipes = {
+  Cake: ["flour","sugar","milk"],
+   Burger: ["bun","patty","sauce"],
+  Pizza: ["dough","cheese","sauce"],
+  Noodles: ["noodles","sauce","veggies"],
+  Sushi: ["rice","fish","seaweed"],
+  IceCream: ["milk","sugar","ice"]
+};
+
+const images = {
+  Cake: "https://cdn-icons-png.flaticon.com/512/1046/1046784.png",
+  Burger: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
+  Pizza: "https://cdn-icons-png.flaticon.com/512/1404/1404945.png",
+  Noodles: "https://cdn-icons-png.flaticon.com/512/3075/3075973.png",
+  Sushi: "https://cdn-icons-png.flaticon.com/512/3075/3075976.png",
+  IceCream: "https://cdn-icons-png.flaticon.com/512/1046/1046786.png"
+};
+
+const ingredients = ["flour","sugar","milk","bun","patty","sauce","dough","cheese","noodles","veggies","rice","fish","seaweed","ice"];
+
+let currentOrder = "";
+let selected = [];
+let score = 0;
+
+function newOrder(){
+  const keys = Object.keys(recipes);
+  currentOrder = keys[Math.floor(Math.random()*keys.length)];
+  document.getElementById("order").innerHTML = "Customer wants: <br><img src='" + images[currentOrder] + "'><br>" + currentOrder;
+}
+
+function addIngredient(item){
+  selected.push(item);
+  document.getElementById("selected").innerText = "Selected: " + selected.join(", ");
+}
+
+function serve(){
+  if(JSON.stringify(selected.sort()) === JSON.stringify(recipes[currentOrder].sort())){
+    score++;
+     alert("Correct! 🎉 Customer Happy 😊");
+  } else {
+    alert("Wrong recipe ❌ Try again");
+  }
+  selected = [];
+  document.getElementById("selected").innerText = "Selected: ";
+  document.getElementById("score").innerText = "Score: " + score;
+  newOrder();
+}
+
+function loadIngredients(){
+  const div = document.getElementById("ingredients");
+  ingredients.forEach(item => {
+    const btn = document.createElement("button");
+    btn.innerText = item;
+    btn.onclick = () => addIngredient(item);
+    div.appendChild(btn);
+  });
+}
+
+loadIngredients();
+newOrder();
+</script>
+
+</body>
+</html>
